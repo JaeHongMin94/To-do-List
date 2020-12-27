@@ -1,20 +1,48 @@
 <!DOCTYPE html>
 <html lang="ko">
+
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>To do List</title>
   <link rel="stylesheet" href="./index.css">
 </head>
+
 <body>
-  <div class="js-clock">
+  <!-- 현재 시간 -->
+  <div class="clock">
     <h1>00:00</h1>
   </div>
-  <form class="js-form form">
-    <input type="text" name="" id="" placeholder="What is your name?">
-  </form>
-  <h4 class="js-greetings greetings"></h4>
+
+  <section class="toDo">
+    <!-- 이름 입력 -->
+    <form class="form">
+      <input type="text" placeholder="What is your name?" />
+    </form>
+    
+    <!-- 할일 작성 -->
+    <h2 class="greetings"></h2>
+    <form class="toDoForm">
+      <input type="text" placeholder="Write a to do" />
+    </form>
+
+    <!-- 탭 메뉴 -->
+    <ul class="tab">
+      <li class="remain">남은 일정</li>
+      <li class="finish">완료 일정</li>
+    </ul>
+
+    <!-- 리스트 목록 -->
+    <ul class="toDoList"></ul>
+  </section>
+  <!-- 온도 및 도시 -->
+  <span class="weather"></span>
+
   <script src="./clock.js"></script>
   <script src="./gretting.js"></script>
+  <script src="./todo.js"></script>
+  <script src="./bg.js"></script>
+  <script src="./weather.js"></script>
 </body>
+
 </html>
