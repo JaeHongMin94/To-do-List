@@ -1,27 +1,51 @@
 const toDoForm = document.querySelector('.toDoForm');
 const toDoInput = toDoForm.querySelector('input');
-const toDoList = document.querySelector('.toDoList');
+const remainToDoArea = document.querySelector('.remainToDo');
+const finishToDoArea = document.querySelector('.finishToDo');
+const remainToDoList = document.querySelector('.remainToDoList');
+const finishToDoList = document.querySelector('.finishToDoList');
 let idNumbers = 1;
 
-const TODOS_LS = 'toDos';
+const REMAINTODOS_LS = 'remainToDos';
+const FINISHTODOS_LS = 'finishToDos';
 
-let toDos = [];
+let remainToDos = [];
+let finishToDos = [];
 
-function succesToDo(event) {}
+function remainShow() {
+  remainToDoArea.classList.add('showing');
+  finishToDoArea.classList.remove('showing');
+}
+function finishShow() {
+  remainToDoArea.classList.remove('showing');
+  finishToDoArea.classList.add('showing');
+}
+
+function succesToDo(event) {
+  const btn = event.target;
+  const li = btn.parentNode;
+  remainToDoList.appendChild(li);
+  finishToDos.push(remainToDoList);
+  localStorage.setItem(FINISHTODOS_LS, JSON.stringify(finishToDos));
+}
 
 function deleteToDo(event) {
   const btn = event.target;
   const li = btn.parentNode;
-  toDoList.removeChild(li);
-  const cleanToDos = toDos.filter(function (toDo) {
+  remainToDoList.removeChild(li);
+  const cleanToDos = remainToDos.filter(function (toDo) {
     return toDo.id !== parseInt(li.id);
   });
-  toDos = cleanToDos;
-  saveToDos();
+  remainToDos = cleanToDos;
+  saveRemainToDos();
 }
 
-function saveToDos() {
-  localStorage.setItem(TODOS_LS, JSON.stringify(toDos));
+function saveRemainToDos() {
+  localStorage.setItem(REMAINTODOS_LS, JSON.stringify(remainToDos));
+}
+
+function saveFinishToDos() {
+  localStorage.setItem(FINISHTODOS_LS, JSON.stringify(finishToDos));
 }
 
 function paintToDo(text) {
@@ -40,30 +64,63 @@ function paintToDo(text) {
   li.appendChild(delBtn);
   li.appendChild(sucBtn);
   li.id = newId;
-  toDoList.appendChild(li);
+  remainToDoList.appendChild(li);
   const toDoObj = {
     text: text,
     id: newId,
   };
-  toDos.push(toDoObj);
-  saveToDos();
+  remainToDos.push(toDoObj);
+  saveRemainToDos();
+}
+
+function finishToDo(text) {
+  const li = document.createElement('li');
+  const delBtn = document.createElement('button');
+  const span = document.createElement('span');
+  const newId = idNumbers;
+  idNumbers += 1;
+  span.innerText = text;
+  delBtn.innerText = '🧺';
+  delBtn.addEventListener('click', deleteToDo);
+  li.appendChild(span);
+  li.appendChild(delBtn);
+  li.id = newId;
+  finishToDoList.appendChild(li);
+  const toDoObj = {
+    text: text,
+    id: newId,
+  };
+  finishToDos.push(toDoObj);
+  saveFinishToDos();
 }
 
 function handleSubmit(event) {
   event.preventDefault();
   const currentValue = toDoInput.value;
-  paintToDo(currentValue);
+  if (currentValue === '') {
+    alert('할 일을 작성해주세요.');
+  } else {
+    paintToDo(currentValue);
+  }
   toDoInput.value = '';
 }
 
 function loadToDos() {
-  const loadedToDos = localStorage.getItem(TODOS_LS);
-  if (loadedToDos !== null) {
-    const parsedToDos = JSON.parse(loadedToDos);
+  const remainToDos = localStorage.getItem(REMAINTODOS_LS);
+  const finishToDos = localStorage.getItem(FINISHTODOS_LS);
+  if (remainToDos !== null) {
+    // 남은 일정 데이터 확인
+    const parsedToDos = JSON.parse(remainToDos);
     parsedToDos.forEach(function (toDo) {
       paintToDo(toDo.text);
     });
-  } else {
+  }
+  if (finishToDos !== null) {
+    // 완료 일정 데이터 확인
+    const parsedToDos = JSON.parse(finishToDos);
+    parsedToDos.forEach(function (toDo) {
+      finishToDo(toDo.text);
+    });
   }
 }
 

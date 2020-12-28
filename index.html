@@ -28,12 +28,20 @@
 
     <!-- 탭 메뉴 -->
     <ul class="tab">
-      <li class="remain">남은 일정</li>
-      <li class="finish">완료 일정</li>
+      <li class="remain" onclick="remainShow();">남은 일정</li>
+      <li class="finish" onclick="finishShow();">완료 일정</li>
     </ul>
 
     <!-- 리스트 목록 -->
-    <ul class="toDoList"></ul>
+    <article>
+      <div class="remainToDo showing">
+        <ul class="remainToDoList"></ul>
+      </div>
+      <div class="finishToDo">
+        <ul class="finishToDoList"></ul>
+      </div>
+    </article>
+    
   </section>
   <!-- 온도 및 도시 -->
   <span class="weather"></span>
