@@ -4,7 +4,8 @@ const remainToDoArea = document.querySelector('.remainToDo');
 const finishToDoArea = document.querySelector('.finishToDo');
 const remainToDoList = document.querySelector('.remainToDoList');
 const finishToDoList = document.querySelector('.finishToDoList');
-let idNumbers = 1;
+let remainIdNumbers = 1;
+let finishIdNumbers = 1;
 
 const REMAINTODOS_LS = 'remainToDos';
 const FINISHTODOS_LS = 'finishToDos';
@@ -29,7 +30,7 @@ function succesToDo(event) {
   localStorage.setItem(FINISHTODOS_LS, JSON.stringify(finishToDos));
 }
 
-function deleteToDo(event) {
+function reaminDeleteToDo(event) {
   const btn = event.target;
   const li = btn.parentNode;
   remainToDoList.removeChild(li);
@@ -38,6 +39,17 @@ function deleteToDo(event) {
   });
   remainToDos = cleanToDos;
   saveRemainToDos();
+}
+
+function finishDeleteToDo(event) {
+  const btn = event.target;
+  const li = btn.parentNode;
+  finishToDoList.removeChild(li);
+  const cleanToDos = finishToDos.filter(function (toDo) {
+    return toDo.id !== parseInt(li.id);
+  });
+  finishToDos = cleanToDos;
+  saveFinishToDos();
 }
 
 function saveRemainToDos() {
@@ -53,13 +65,13 @@ function paintToDo(text) {
   const sucBtn = document.createElement('button');
   const delBtn = document.createElement('button');
   const span = document.createElement('span');
-  const newId = idNumbers;
-  idNumbers += 1;
+  const newId = remainIdNumbers;
+  remainIdNumbers += 1;
   span.innerText = text;
   sucBtn.innerText = '✔';
   delBtn.innerText = '❌';
   sucBtn.addEventListener('click', succesToDo);
-  delBtn.addEventListener('click', deleteToDo);
+  delBtn.addEventListener('click', reaminDeleteToDo);
   li.appendChild(span);
   li.appendChild(delBtn);
   li.appendChild(sucBtn);
@@ -77,11 +89,11 @@ function finishToDo(text) {
   const li = document.createElement('li');
   const delBtn = document.createElement('button');
   const span = document.createElement('span');
-  const newId = idNumbers;
-  idNumbers += 1;
+  const newId = finishIdNumbers;
+  finishIdNumbers += 1;
   span.innerText = text;
   delBtn.innerText = '🧺';
-  delBtn.addEventListener('click', deleteToDo);
+  delBtn.addEventListener('click', finishDeleteToDo);
   li.appendChild(span);
   li.appendChild(delBtn);
   li.id = newId;
